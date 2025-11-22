@@ -314,7 +314,7 @@ public class AGDatabaseService : IAGDatabaseService
             return;
         if (task.RealEndDate<task.StartDate || task.EstimatesEndDate < task.StartDate)
         {
-            throw new Exception("Дата завершення має бути пізніше дати початку");
+            throw new Exception("пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
         }
         else
         {

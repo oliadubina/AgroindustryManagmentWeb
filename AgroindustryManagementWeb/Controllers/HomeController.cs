@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using AgroindustryManagementWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgroindustryManagementWeb.Controllers
@@ -17,7 +18,7 @@ namespace AgroindustryManagementWeb.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
