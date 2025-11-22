@@ -1,0 +1,98 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Field
+
+@{
+    ViewData["Title"] = "Редагувати Поле";
+    // Отримуємо списки, передані з контролера через ViewBag
+    var availableWorkers = ViewBag.AvailableWorkers as List<Worker> ?? new List<Worker>();
+    var availableMachines = ViewBag.AvailableMachines as List<Machine> ?? new List<Machine>();
+    var availableTasks = ViewBag.AvailableTasks as List<WorkerTask> ?? new List<WorkerTask>();
+
+    // Створюємо множини (Set) для швидкої перевірки, чи об'єкт вже призначений
+    var currentWorkerIds = new HashSet<int>(Model.Workers.Select(w => w.Id));
+    var currentMachineIds = new HashSet<int>(Model.Machines.Select(m => m.Id));
+    var currentTaskIds = new HashSet<int>(Model.Tasks.Select(t => t.Id));
+}
+
+<h1>Редагувати Поле - ID: @Model.Id</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            @* 1. Основні властивості *@
+
+            <div class="form-group mb-3">
+                <label asp-for="Area" class="control-label">Площа (га)</label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Culture" class="control-label">Культура</label>
+                <select asp-for="Culture" asp-items="Html.GetEnumSelectList<CultureType>()" class="form-control"></select>
+                <span asp-validation-for="Culture" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="control-label">Статус</label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<FieldStatus>()" class="form-control"></select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            @* 2. Вибір пов'язаних сутностей з попереднім вибором *@
+
+            <div class="form-group mb-3">
+                <label class="control-label">Працівники</label>
+                <select name="SelectedWorkerIds" multiple class="form-control">
+                    @foreach (var worker in availableWorkers)
+                    {
+                        // Використовуємо 'selected', якщо ID працівника вже є в поточному списку Model.Workers
+                        <option value="@worker.Id" selected="@currentWorkerIds.Contains(worker.Id)">
+                            @worker.Id - @(worker.FirstName ?? "Невідомий працівник")
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Техніка</label>
+                <select name="SelectedMachineIds" multiple class="form-control">
+                    @foreach (var machine in availableMachines)
+                    {
+                        <option value="@machine.Id" selected="@currentMachineIds.Contains(machine.Id)">
+                            @machine.Id | Тип: @(machine.Type.ToString() ?? "Невідомий тип")
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-5">
+                <label class="control-label">Завдання</label>
+                <select name="SelectedTaskIds" multiple class="form-control">
+                    @foreach (var task in availableTasks)
+                    {
+                        <option value="@task.Id" selected="@currentTaskIds.Contains(task.Id)">
+                            @task.Id - @(task.Description ?? "Невідоме завдання")
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Зберегти Зміни" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

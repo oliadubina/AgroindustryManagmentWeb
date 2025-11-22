@@ -1,0 +1,124 @@
+﻿@using AgroindustryManagementWeb.Models
+@model IEnumerable<WorkerTask>
+
+@{
+    ViewData["Title"] = "Управління Завданнями";
+}
+
+<h1>🚜 Управління завданнями</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">➕ Створити нове завдання</a>
+</p>
+
+@* Відображення повідомлень про помилки або успіх із TempData *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Помилка:</strong> @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-striped table-hover">
+    <thead>
+      
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Опис
+            </th>
+            <th>
+                Працівники
+            </th>
+            <th>
+                Поля
+            </th>
+            <th>
+                Тип завдання
+            </th>
+            <th>
+                Прогрес
+            </th>
+            <th>
+                Дата початку
+            </th>
+            <th>
+                Дата реального завершення
+            </th>
+            <th>
+                 Дата очікуваного завершення
+            </th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+               
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description) 
+                </td>
+                <td>
+                    @if (item.Worker != null)
+                    {
+                        // Виводимо ID та Площу у форматі "ID: 4 (44 га)"
+                        @Html.Raw($"ID: {item.Worker.Id} ({item.Worker.FirstName} {item.Worker.LastName})")
+                    }
+                    else
+                    {
+                        @item.WorkerId.ToString()
+                    }
+                </td>
+                <td>
+                    @if (item.Field != null)
+                    {
+                       
+                        @Html.Raw($"ID: {item.Field.Id} ({item.Field.Area} га)")
+                    }
+                    else
+                    {
+                        @item.FieldId.ToString()
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TaskType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Progress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                <td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RealEndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstimatesEndDate)
+                </td>
+               
+               
+               
+                
+                <td>
+                    <a asp-action="Edit" asp-route-fieldId="@item.Id" class="btn btn-sm btn-warning">✏️ Редагувати</a>
+                    <a asp-action="Details" asp-route-fieldId="@item.Id" class="btn btn-sm btn-info">🔍 Деталі</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">🗑️ Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Наразі немає зареєстрованих завдань.
+    </div>
+}
+

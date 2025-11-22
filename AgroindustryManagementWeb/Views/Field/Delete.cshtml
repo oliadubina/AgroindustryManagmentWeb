@@ -1,0 +1,53 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Field
+
+@{
+    ViewData["Title"] = "Видалити Поле";
+}
+
+<h1 class="text-danger">Видалити Поле</h1>
+
+<h3>⚠️ Ви впевнені, що хочете видалити це поле?</h3>
+<p class="text-danger">Це дія є незворотною. Усі зв'язані дані будуть відкріплені від цього поля.</p>
+
+<hr />
+
+<div>
+    <h4>Деталі Поля: ID @Model.Id</h4>
+    
+    <dl class="row">
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Area) га
+        </dd>
+        
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Culture)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Culture)
+        </dd>
+        
+        <dt class="col-sm-3">
+            Кількість працівників
+        </dt>
+        <dd class="col-sm-9">
+            <span class="badge bg-secondary">@Model.Workers.Count</span>
+        </dd>
+        
+    </dl>
+
+   
+    <form asp-action="DeleteConfirmed" method="post"> 
+        
+        
+        
+        <input type="hidden" asp-for="Id" /> 
+        
+        <button type="submit" class="btn btn-danger">🗑️ Підтвердити Видалення</button> |
+        <a asp-action="Index" class="btn btn-secondary">Скасувати та Повернутися</a>
+    </form>
+</div>

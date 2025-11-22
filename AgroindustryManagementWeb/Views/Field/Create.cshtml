@@ -1,0 +1,89 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Field
+
+@{
+    ViewData["Title"] = "Створити Нове Поле";
+    // Отримуємо списки, передані з контролера через ViewBag
+    var availableWorkers = ViewBag.AvailableWorkers as List<Worker> ?? new List<Worker>();
+    var availableMachines = ViewBag.AvailableMachines as List<Machine> ?? new List<Machine>();
+    var availableTasks = ViewBag.AvailableTasks as List<WorkerTask> ?? new List<WorkerTask>();
+}
+
+<h1>Створити Поле</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* 1. Основні властивості *@
+
+            <div class="form-group mb-3">
+                <label asp-for="Area" class="control-label">Площа (га)</label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Culture" class="control-label">Культура</label>
+                <select asp-for="Culture" asp-items="Html.GetEnumSelectList<CultureType>()" class="form-control">
+                    <option value="">-- Оберіть Культуру --</option>
+                </select>
+                <span asp-validation-for="Culture" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Status" class="control-label">Статус</label>
+                <select asp-for="Status" asp-items="Html.GetEnumSelectList<FieldStatus>()" class="form-control">
+                    <option value="">-- Оберіть Статус --</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            @* 2. Вибір пов'язаних сутностей *@
+
+            <div class="form-group mb-3">
+                <label class="control-label">Призначити Працівників</label>
+                @* name="SelectedWorkerIds" відповідає імені параметра в POST-методі контролера *@
+                <select name="SelectedWorkerIds" multiple class="form-control">
+                    @foreach (var worker in availableWorkers)
+                    {
+                        <option value="@worker.Id">@worker.Id - @(worker.FirstName ?? "Невідомий працівник")</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Призначити Техніку</label>
+                <select name="SelectedMachineIds" multiple class="form-control">
+                    @foreach (var machine in availableMachines)
+                    {
+                        <option value="@machine.Id">@machine.Id | Тип: @(machine.Type.ToString() ?? "Невідомий тип")</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-5">
+                <label class="control-label">Призначити Завдання</label>
+                <select name="SelectedTaskIds" multiple class="form-control">
+                    @foreach (var task in availableTasks)
+                    {
+                        <option value="@task.Id">@task.Id - @(task.Description ?? "Невідоме завдання")</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Створити" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

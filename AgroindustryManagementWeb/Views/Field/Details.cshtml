@@ -1,0 +1,119 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Field
+
+@{
+    ViewData["Title"] = $"Деталі Поля ID: {Model.Id}";
+}
+
+<h1>🔍 Деталі Поля</h1>
+
+<hr />
+<div>
+
+    <h2>Основна Інформація</h2>
+    <dl class="row">
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Area)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Area) га
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Culture)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Culture)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+
+    </dl>
+
+    <hr />
+
+    <h2>🧑‍🌾 Призначені Ресурси та Завдання</h2>
+
+    <div class="row">
+
+        @* Список Працівників *@
+        <div class="col-md-4 mb-4">
+            <h4>Працівники (@Model.Workers.Count)</h4>
+            @if (Model.Workers.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var worker in Model.Workers)
+                    {
+                        <li class="list-group-item">ID: @worker.Id | Ім'я: @(worker.FirstName ?? "Не вказано")</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Працівники не призначені.</p>
+            }
+        </div>
+
+        @* Список Техніки *@
+        <div class="col-md-4 mb-4">
+            <h4>Техніка (@Model.Machines.Count)</h4>
+            @if (Model.Machines.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var machine in Model.Machines)
+                    {
+                        <li class="list-group-item">ID: @machine.Id | Тип: @(machine.Type.ToString() ?? "Невідомий тип")</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Техніка не призначена.</p>
+            }
+        </div>
+
+        @* Список Завдань *@
+        <div class="col-md-4 mb-4">
+            <h4>Завдання (@Model.Tasks.Count)</h4>
+            @if (Model.Tasks.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <li class="list-group-item">ID: @task.Id | Опис: @(task.Description ?? "Немає опису")</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Завдання не призначені.</p>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-fieldId="@Model.Id" class="btn btn-warning">✏️ Редагувати</a>
+    <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+</div>
