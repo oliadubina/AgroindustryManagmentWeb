@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AgroindustryManagementWeb.Models;
 using AgroindustryManagementWeb.Services.Database;
+using AgroindustryManagementWeb.Services.Calculations;
 
 namespace AgroindustryManagementWeb.Controllers
 {
@@ -8,9 +9,11 @@ namespace AgroindustryManagementWeb.Controllers
     public class WorkerController : Controller
     {
         private readonly IAGDatabaseService _databaseService;
-        public WorkerController(IAGDatabaseService databaseService)
+        private readonly IAGCalculationService _calculationService;
+        public WorkerController(IAGDatabaseService databaseService, IAGCalculationService aGCalculationService)
         {
             _databaseService=databaseService;
+            _calculationService=aGCalculationService;
         }
         public IActionResult Index()
         {
@@ -30,6 +33,7 @@ namespace AgroindustryManagementWeb.Controllers
             try
             {
                 var worker = _databaseService.GetWorkerById(id);
+                ViewBag.Bonus = _calculationService.CalculateBonus(worker, worker.Tasks);
                 return View(worker);
             }
             catch (KeyNotFoundException ex)

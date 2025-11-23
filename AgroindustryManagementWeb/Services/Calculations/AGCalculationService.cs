@@ -91,7 +91,6 @@ public class AGCalculationService : IAGCalculationService
         }
         //var concreteMachine=_databaseService.GetMachineByMachineType(machineType);
         return machine.FuelConsumption * areaInHectares;
-
     }
 
     public int CalculateRequiredWorkers(Resource resource/*CultureType cropType*/, double areaInHectares)

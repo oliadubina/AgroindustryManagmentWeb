@@ -1,5 +1,7 @@
 ﻿using AgroindustryManagementWeb.Models;
+using AgroindustryManagementWeb.Services.Calculations;
 using AgroindustryManagementWeb.Services.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.FlowAnalysis.DataFlow;
 
@@ -8,9 +10,11 @@ namespace AgroindustryManagementWeb.Controllers
     public class FieldController : Controller
     {
         private readonly IAGDatabaseService _databaseService;
-        public FieldController(IAGDatabaseService databaseService)
+        private readonly IAGCalculationService _aGCalculationService;
+        public FieldController(IAGDatabaseService databaseService,IAGCalculationService aGCalculationService)
         {
             _databaseService = databaseService;
+            _aGCalculationService = aGCalculationService;
         }
         public IActionResult Index()
         {
@@ -32,6 +36,18 @@ namespace AgroindustryManagementWeb.Controllers
             try
             {
                 var field = _databaseService.GetFieldById(fieldId);
+                var resource = _databaseService.GetResourceByCultureType(field.Culture);
+                ViewBag.RequiredWorkers = _aGCalculationService.CalculateRequiredWorkers(resource, field.Area);
+                ViewBag.RequiredMachinery = _aGCalculationService.CalculateRequiredMachineryCount(resource);
+                ViewBag.SeedAmount = _aGCalculationService.CalculateSeedAmount(resource, field.Area);
+                ViewBag.FertilizerAmount = _aGCalculationService.CalculateFertilizerAmount(resource, field.Area);
+                ViewBag.EstimatedYield = _aGCalculationService.EstimateYield(resource, field.Area);
+                double fuelConsumption = 0;
+                foreach (var machine in field.Machines)
+                {
+                    fuelConsumption += _aGCalculationService.EstimateFuelConsumption(machine, field.Area);
+                }
+                ViewBag.EstimatedFuelConsumption = fuelConsumption;
                 return View(field);
             }
             catch (KeyNotFoundException ex)

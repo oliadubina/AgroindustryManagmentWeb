@@ -1,0 +1,92 @@
+﻿@using AgroindustryManagementWeb.Models
+@model IEnumerable<Resource>
+
+@{
+    ViewData["Title"] = "Управління Ресурсами";
+}
+
+<h1>🚜 Управління Ресурсами</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">➕ Створити нове Ресурс</a>
+</p>
+
+@* Відображення повідомлень про помилки або успіх із TempData *@
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <strong>Помилка:</strong> @TempData["ErrorMessage"]
+    </div>
+}
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Тип культури
+            </th>
+            <th>
+                Насіння/Гектар
+            </th>
+            <th>
+                Добриво/Гектар
+            </th>
+            <th>
+                Техніка/Гектар
+            </th>
+            <th>
+                Працівники/Гектар
+            </th>
+            <th>Час роботи працівника/Гектар</th>
+            <th>
+                Урожайність
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CultureType) **га**
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeedPerHectare)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FertilizerPerHectare)
+                </td>
+                <td>
+                    **@item.RequiredMachines.Count()** осіб
+                </td>
+                <td>
+                    **@item.WorkerPerHectare** працівників
+                </td>
+                <td>
+                    **@item.WorkerWorkDuralityPerHectare** год.
+                </td>
+                <td>
+					@Html.DisplayFor(modelItem => item.Yield)
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">✏️ Редагувати</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">🔍 Деталі</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">🗑️ Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        Наразі немає зареєстрованих полів.
+    </div>
+}
+

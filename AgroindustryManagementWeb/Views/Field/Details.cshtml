@@ -47,7 +47,30 @@
         <dd class="col-sm-9">
             @Html.DisplayFor(model => model.CreatedAt)
         </dd>
-
+        <dt class="col-sm-3">
+            Потрібна Кількість Зерна
+        </dt>
+        <dd class="col-sm-9">
+            @ViewBag.SeedAmount
+        </dd>
+        <dt class="col-sm-3">
+			Потрібна Кількість Добрив
+            </dt>
+		<dd class="col-sm-9">
+            @ViewBag.FertilizerAmount
+		</dd>
+        <dt class="col-sm-3">
+            Очікувана Кількість Палива
+        </dt>
+        <dd class="col-sm-9">
+            @ViewBag.EstimatedFuelConsumption
+        </dd>
+        <dt class="col-sm-3">
+            Очікувана Урожайність/Гектар
+        </dt>
+        <dd class="col-sm-9">
+            @ViewBag.EstimatedYield
+        </dd>
     </dl>
 
     <hr />
@@ -58,7 +81,7 @@
 
         @* Список Працівників *@
         <div class="col-md-4 mb-4">
-            <h4>Працівники (@Model.Workers.Count)</h4>
+            <h4>Працівники (@Model.Workers.Count) (Потрібна кількість: @ViewBag.RequiredWorkers)</h4>
             @if (Model.Workers.Any())
             {
                 <ul class="list-group">
@@ -76,7 +99,7 @@
 
         @* Список Техніки *@
         <div class="col-md-4 mb-4">
-            <h4>Техніка (@Model.Machines.Count)</h4>
+            <h4>Техніка (@Model.Machines.Count) (Потрібна кількість: @ViewBag.RequiredMachinery)</h4>
             @if (Model.Machines.Any())
             {
                 <ul class="list-group">

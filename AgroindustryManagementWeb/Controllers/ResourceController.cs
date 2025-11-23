@@ -48,6 +48,7 @@ namespace AgroindustryManagementWeb.Controllers
         {
             return View();
         }
+        [HttpPost]
         public IActionResult Create(Resource resource)
         {
             if (!ModelState.IsValid)
@@ -83,6 +84,7 @@ namespace AgroindustryManagementWeb.Controllers
                 return RedirectToAction("Index");
             }
         }
+        [HttpPost]
         public IActionResult Edit(int id, Resource resource)
         {
             if (id!=resource.Id)

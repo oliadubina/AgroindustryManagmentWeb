@@ -1,0 +1,60 @@
+﻿@model AgroindustryManagementWeb.Models.Resource
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Resource</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CultureType" class="control-label"></label>
+                <select asp-for="CultureType" asp-items="Html.GetEnumSelectList<CultureType>()" class="form-control">
+                    <option value="">-- Оберіть Культуру --</option>
+                </select>
+                <span asp-validation-for="CultureType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SeedPerHectare" class="control-label"></label>
+                <input asp-for="SeedPerHectare" class="form-control" />
+                <span asp-validation-for="SeedPerHectare" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FertilizerPerHectare" class="control-label"></label>
+                <input asp-for="FertilizerPerHectare" class="form-control" />
+                <span asp-validation-for="FertilizerPerHectare" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkerPerHectare" class="control-label"></label>
+                <input asp-for="WorkerPerHectare" class="form-control" />
+                <span asp-validation-for="WorkerPerHectare" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkerWorkDuralityPerHectare" class="control-label"></label>
+                <input asp-for="WorkerWorkDuralityPerHectare" class="form-control" />
+                <span asp-validation-for="WorkerWorkDuralityPerHectare" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Yield" class="control-label"></label>
+                <input asp-for="Yield" class="form-control" />
+                <span asp-validation-for="Yield" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

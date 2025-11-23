@@ -1,0 +1,54 @@
+﻿@model AgroindustryManagementWeb.Models.Resource
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Resource</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CultureType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CultureType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SeedPerHectare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SeedPerHectare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FertilizerPerHectare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FertilizerPerHectare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkerPerHectare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkerPerHectare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkerWorkDuralityPerHectare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkerWorkDuralityPerHectare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Yield)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Yield)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
