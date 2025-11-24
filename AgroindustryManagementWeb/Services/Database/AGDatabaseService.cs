@@ -1,6 +1,6 @@
 using AgroindustryManagementWeb.Models;
 using Microsoft.EntityFrameworkCore;
-
+using System.Globalization;
 namespace AgroindustryManagementWeb.Services.Database;
 
 public class AGDatabaseService : IAGDatabaseService
@@ -161,7 +161,7 @@ public class AGDatabaseService : IAGDatabaseService
             throw new ArgumentException("Id must be positive", nameof(machineId));
         }
         
-        var machineExist = _context.Machines.FirstOrDefault(dbMachine => dbMachine.Id == machineId);
+        var machineExist = _context.Machines.Include(t=>t.Field).Include(t=>t.Resource).FirstOrDefault(dbMachine => dbMachine.Id == machineId);
         if (machineExist == null)
         {
             throw new KeyNotFoundException("Machine is not found");
@@ -172,7 +172,7 @@ public class AGDatabaseService : IAGDatabaseService
 
     public IEnumerable<Machine> GetAllMachines()
     {
-        var machines = _context.Machines.ToList();
+        var machines = _context.Machines.Include(t => t.Field).Include(t => t.Resource).ToList();
         return machines.Count == 0 ? Enumerable.Empty<Machine>() : machines;
     }
     public void AddMachine(Machine machine)
@@ -192,8 +192,8 @@ public class AGDatabaseService : IAGDatabaseService
             throw new KeyNotFoundException("Such machine is not found"); 
         }
         
-        existingMachine.Field = machine.Field;
-        existingMachine.Resource = machine.Resource;
+        existingMachine.FieldId = machine.FieldId;
+        existingMachine.ResourceId = machine.ResourceId;
         existingMachine.IsAvailable=machine.IsAvailable;
         existingMachine.Type= machine.Type;
         existingMachine.FuelConsumption= machine.FuelConsumption;
@@ -290,7 +290,8 @@ public class AGDatabaseService : IAGDatabaseService
             throw new ArgumentException("ID must be positive", nameof(taskId));
         }
         
-        var task = _context.WorkerTasks.FirstOrDefault(dbTask => dbTask.Id == taskId);
+        var task = _context.WorkerTasks.Include(t => t.Worker) 
+        .Include(t => t.Field).FirstOrDefault(dbTask => dbTask.Id == taskId);
         if (task == null)
         {
             throw new KeyNotFoundException("There is no such task");
@@ -299,12 +300,27 @@ public class AGDatabaseService : IAGDatabaseService
         return task;
     }
 
-    public IEnumerable<WorkerTask> GetAllWorkerTasks()
+    public IEnumerable<WorkerTask> GetAllWorkerTasks(string searchDate = null)
     {
-        var tasks = _context.WorkerTasks
-        .Include(t => t.Worker)
-        .Include(t => t.Field)
-        .ToList();
+        IQueryable<WorkerTask> tasksQuery = _context.WorkerTasks
+            .Include(t => t.Worker)
+            .Include(t => t.Field);
+
+       
+        if (!string.IsNullOrEmpty(searchDate))
+        {
+            // Спроба розібрати дату. Формат "yyyy-MM-dd" найкраще працює з <input type="date">
+            if (DateTime.TryParse(searchDate, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+            {
+               
+                tasksQuery = tasksQuery.Where(t => t.StartDate.Date == parsedDate.Date);
+            }
+        }
+
+        
+        var tasks = tasksQuery.ToList();
+
+        
         return tasks.Count == 0 ? Enumerable.Empty<WorkerTask>() : tasks;
     }
 
@@ -314,15 +330,12 @@ public class AGDatabaseService : IAGDatabaseService
             return;
         if (task.RealEndDate<task.StartDate || task.EstimatesEndDate < task.StartDate)
         {
-            throw new Exception("���� ���������� �� ���� ����� ���� �������");
+            throw new Exception("Фактична дата завершення або очікувана дата мають бути більше дати початку");
         }
-        else
-        {
             
-
-            _context.WorkerTasks.Add(task);
-            _context.SaveChanges();
-        }
+        _context.WorkerTasks.Add(task);
+        _context.SaveChanges();
+        
     }
 
     public void UpdateWorkerTask(WorkerTask task)
@@ -332,10 +345,16 @@ public class AGDatabaseService : IAGDatabaseService
         {
             throw new KeyNotFoundException("There is no such task");
         }
-        
-        existingWorkerTask.Worker = task.Worker;
-        existingWorkerTask.Field = task.Field;
+        if (task.RealEndDate<task.StartDate || task.EstimatesEndDate < task.StartDate)
+        {
+            throw new Exception("Фактична дата завершення або очікувана дата мають бути більше дати початку");
+        }
+
+        existingWorkerTask.WorkerId = task.WorkerId;
+        existingWorkerTask.FieldId = task.FieldId;
         existingWorkerTask.Description = task.Description;
+        existingWorkerTask.StartDate = task.StartDate;
+        existingWorkerTask.RealEndDate= task.RealEndDate;
         existingWorkerTask.EstimatesEndDate = task.EstimatesEndDate;
         existingWorkerTask.Progress = task.Progress;
         existingWorkerTask.TaskType = task.TaskType;

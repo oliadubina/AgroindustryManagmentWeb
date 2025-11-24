@@ -1,0 +1,93 @@
+﻿@using AgroindustryManagementWeb.Models
+@model WorkerTask
+
+@{
+    ViewData["Title"] = "Редагувати Завдання";
+    // Отримуємо списки, передані з контролера через ViewBag
+    var workersList = ViewBag.WorkersList as SelectList;
+    var fieldsList = ViewBag.FieldsList as SelectList;
+    }
+<h1>Редагувати Завдання - ID: @Model.Id</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            @* 1. Основні властивості *@
+
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="control-label">Опис</label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="TaskType" class="control-label">Тип завдання</label>
+                    <select asp-for="TaskType" asp-items="Html.GetEnumSelectList<TaskType>()" class="form-control">
+                        <option value="">-- Оберіть Тип --</option>
+                    </select>
+                    <span asp-validation-for="TaskType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Progress" class="control-label">Прогрес (%)</label>
+                    <input asp-for="Progress" class="form-control" />
+                    <span asp-validation-for="Progress" class="text-danger"></span>
+                </div>
+
+                @* Поля дати *@
+                <div class="form-group mb-3">
+                    <label asp-for="StartDate" class="control-label">Дата початку</label>
+                    <input asp-for="StartDate" class="form-control" type="date" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="EstimatesEndDate" class="control-label">Очікувана дата завершення</label>
+                    <input asp-for="EstimatesEndDate" class="form-control" type="date" />
+                    <span asp-validation-for="EstimatesEndDate" class="text-danger"></span>
+                </div>
+
+                @* RealEndDate може бути прихована при створенні, або мати можливість залишити її пустою, якщо вона Nullable *@
+                <div class="form-group mb-3">
+                    <label asp-for="RealEndDate" class="control-label">Фактична дата завершення</label>
+                    <input asp-for="RealEndDate" class="form-control" type="date" />
+                    <span asp-validation-for="RealEndDate" class="text-danger"></span>
+                </div>
+
+
+                @* 2. Вибір пов'язаних сутностей (через їхні ID) *@
+
+                <div class="form-group mb-3">
+                    <label asp-for="WorkerId" class="control-label">Призначити Працівника</label>
+                    <select asp-for="WorkerId" asp-items="workersList" class="form-control">
+                        <option value="">-- Оберіть Працівника --</option>
+                    </select>
+                    <span asp-validation-for="WorkerId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-5">
+                    <label asp-for="FieldId" class="control-label">Призначити Полю</label>
+                    <select asp-for="FieldId" asp-items="fieldsList" class="form-control">
+                        <option value="">-- Оберіть Поле --</option>
+                    </select>
+                    <span asp-validation-for="FieldId" class="text-danger"></span>
+                </div>
+
+            <div class="form-group">
+                <input type="submit" value="Зберегти Зміни" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

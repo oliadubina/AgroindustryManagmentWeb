@@ -1,0 +1,80 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Machine
+
+@{
+    ViewData["Title"] = "Редагувати Машину";
+    // Отримуємо списки, передані з контролера через ViewBag
+    var resourcesList = ViewBag.ResourceList as SelectList;
+    var fieldsList = ViewBag.FieldsList as SelectList;
+}
+<h1>Редагувати Машину - ID: @Model.Id</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="Id" />
+
+            @* 1. Основні властивості *@
+
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label">Тип машини</label>
+                <select asp-for="Type" asp-items="Html.GetEnumSelectList<MachineType>()" class="form-control">
+                    <option value="">-- Оберіть Тип --</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="FuelConsumption" class="control-label">Споживання палива</label>
+                <input asp-for="FuelConsumption" class="form-control" />
+                <span asp-validation-for="FuelConsumption" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="IsAvailable" class="control-label">Є вільна</label>
+                <input asp-for="IsAvailable" class="form-check-input" />
+                <span asp-validation-for="IsAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label asp-for="WorkDuralityPerHectare" class="control-label">Тривалість роботи/гектар</label>
+                <input asp-for="WorkDuralityPerHectare" class="form-control" />
+                <span asp-validation-for="WorkDuralityPerHectare" class="text-danger"></span>
+            </div>
+
+            
+
+
+            @* 2. Вибір пов'язаних сутностей (через їхні ID) *@
+
+           <div class="form-group mb-3">
+            <label asp-for="ResourceId" class="control-label">Призначити ресурс</label>
+            <select asp-for="ResourceId" asp-items="resourcesList" class="form-control">
+                <option value="">-- Оберіть ресурс --</option>
+            </select>
+            <span asp-validation-for="ResourceId" class=" text-danger"></span>
+             </div>
+
+             <div class="form-group mb-5">
+            <label asp-for="FieldId" class="control-label">Призначити Полю</label>
+            <select asp-for="FieldId" asp-items="fieldsList" class="form-control">
+                <option value="">-- Оберіть Поле --</option>
+            </select>
+            <span asp-validation-for="FieldId" class="text-danger"></span>
+        </div>
+
+            <div class="form-group">
+                <input type="submit" value="Зберегти Зміни" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -12,11 +12,12 @@ namespace AgroindustryManagementWeb.Controllers
             {
                 _databaseService = databaseService;
             }
-            public IActionResult Index()
+            public IActionResult Index(string searchDate)
             {
                 try
                 {
-                    var workerTasks= _databaseService.GetAllWorkerTasks();
+                    ViewBag.CurrentFilter = searchDate;
+                    var workerTasks= _databaseService.GetAllWorkerTasks(searchDate);
                     return View(workerTasks);
                 }
                 catch (Exception ex)
@@ -56,7 +57,7 @@ namespace AgroindustryManagementWeb.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                var errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
+                //var errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
                 ViewBag.WorkersList = new SelectList(_databaseService.GetAllWorkers(), "Id", "FirstName");
                     ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                     return View(workerTask);
@@ -80,6 +81,8 @@ namespace AgroindustryManagementWeb.Controllers
             {
                 try
                 {
+                    ViewBag.WorkersList = new SelectList(_databaseService.GetAllWorkers(), "Id", "FirstName");
+                    ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                     var workerTask = _databaseService.GetWorkerTaskById(id);
                     return View(workerTask);
                 }
@@ -105,7 +108,9 @@ namespace AgroindustryManagementWeb.Controllers
                 }
                 if (!ModelState.IsValid)
                 {
-                    return View(workerTask);
+                ViewBag.WorkersList = new SelectList(_databaseService.GetAllWorkers(), "Id", "FirstName");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
+                return View(workerTask);
                 }
                 try
                 {
@@ -120,7 +125,9 @@ namespace AgroindustryManagementWeb.Controllers
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("", "Помилка при оновленні: " + ex.Message);
-                    return View(workerTask);
+                ViewBag.WorkersList = new SelectList(_databaseService.GetAllWorkers(), "Id", "FirstName");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
+                return View(workerTask);
                 }
 
             }

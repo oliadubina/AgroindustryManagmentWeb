@@ -1,6 +1,7 @@
 ﻿using AgroindustryManagementWeb.Models;
 using AgroindustryManagementWeb.Services.Database;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 //using System.Reflection.PortableExecutable;
 
 namespace AgroindustryManagementWeb.Controllers
@@ -47,6 +48,8 @@ namespace AgroindustryManagementWeb.Controllers
         }
         public IActionResult Create()
         {
+            ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+            ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
             return View();
         }
         [HttpPost]
@@ -54,6 +57,8 @@ namespace AgroindustryManagementWeb.Controllers
         {
             if (!ModelState.IsValid)
             {
+                ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                 return View(newMachine);
             }
             try
@@ -64,6 +69,8 @@ namespace AgroindustryManagementWeb.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Помилка при додаванні" + ex.Message);
+                ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                 return View(newMachine);
             }
         }
@@ -72,6 +79,8 @@ namespace AgroindustryManagementWeb.Controllers
             try
             {
                 var machine = _databaseService.GetMachineById(id);
+                ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                 return View(machine);
             }
             catch (ArgumentException ex)
@@ -96,6 +105,8 @@ namespace AgroindustryManagementWeb.Controllers
             }
             if (!ModelState.IsValid)
             {
+                ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                 return View(machine);
             }
             try
@@ -111,6 +122,8 @@ namespace AgroindustryManagementWeb.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", "Помилка при редагуванні" + ex.Message);
+                ViewBag.ResourceList = new SelectList(_databaseService.GetAllResources(), "Id", "CultureType");
+                ViewBag.FieldsList = new SelectList(_databaseService.GetAllFields(), "Id", "Area");
                 return View(machine);
             }
         }

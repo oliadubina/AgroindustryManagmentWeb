@@ -154,7 +154,7 @@ public interface IAGDatabaseService
     /// Retrieves all worker tasks.
     /// </summary>
     /// <returns>A collection of all worker tasks.</returns>
-    IEnumerable<WorkerTask> GetAllWorkerTasks();
+    IEnumerable<WorkerTask> GetAllWorkerTasks(string searchDate = null);
 
     /// <summary>
     /// Adds a new worker task to the database.

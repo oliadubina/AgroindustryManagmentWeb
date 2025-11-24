@@ -1,0 +1,69 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Machine
+
+@{
+    ViewData["Title"] = "Видалити машину";
+}
+
+<h1 class="text-danger">Видалити машину</h1>
+
+<h3>⚠️ Ви впевнені, що хочете видалити цю машину?</h3>
+<p class="text-danger">Це дія є незворотною. Усі зв'язані дані будуть відкріплені від цієї машини.</p>
+
+<hr />
+
+<div>
+    <h4>Деталі машини: ID @Model.Id</h4>
+
+    <dl class="row">
+
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.FuelConsumption)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.FuelConsumption)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IsAvailable)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsAvailable)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.WorkDuralityPerHectare)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.WorkDuralityPerHectare)
+        </dd>
+
+    </dl>
+
+
+
+    <form asp-action="DeleteConfirmed" method="post">
+
+
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger">🗑️ Підтвердити Видалення</button> |
+        <a asp-action="Index" class="btn btn-secondary">Скасувати та Повернутися</a>
+    </form>
+</div>

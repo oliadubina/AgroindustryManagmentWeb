@@ -1,0 +1,83 @@
+﻿@using AgroindustryManagementWeb.Models
+@model WorkerTask
+
+@{
+    ViewData["Title"] = $"Деталі Завдання ID: {Model.Id}";
+}
+
+<h1>🔍 Деталі Завдання</h1>
+
+<hr />
+<div>
+
+    <h2>Основна Інформація</h2>
+    <dl class="row">
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.TaskType)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.TaskType)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Progress)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Progress)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RealEndDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.RealEndDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.EstimatesEndDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.EstimatesEndDate)
+        </dd>
+    </dl>
+
+    <hr />
+
+    <dt class="col-sm-3">🧑‍🌾 Працівник:</dt>
+    <dd class="col-sm-9">
+        @* Виводимо ім'я та прізвище, якщо Worker не null *@
+        @(Model.Worker?.FirstName) @(Model.Worker?.LastName) (ID: @Model.WorkerId)
+    </dd>
+    
+    <dt class="col-sm-3">🗺️ Поле:</dt>
+    <dd class="col-sm-9">
+        @* Виводимо площу та ID поля *@
+        @(Model.Field?.Area) га (ID: @Model.FieldId)
+    </dd>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-fieldId="@Model.Id" class="btn btn-warning">✏️ Редагувати</a>
+    <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+</div>

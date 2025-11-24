@@ -1,0 +1,79 @@
+﻿@using AgroindustryManagementWeb.Models
+@model WorkerTask
+
+@{
+    ViewData["Title"] = "Видалити завдання";
+}
+
+<h1 class="text-danger">Видалити Завдання</h1>
+
+<h3>⚠️ Ви впевнені, що хочете видалити це завдання?</h3>
+<p class="text-danger">Це дія є незворотною. Усі зв'язані дані будуть відкріплені від цього завдання.</p>
+
+<hr />
+
+<div>
+    <h4>Деталі Завдання: ID @Model.Id</h4>
+
+    <dl class="row">
+       
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.TaskType)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.TaskType)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Progress)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Progress)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.RealEndDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.RealEndDate)
+        </dd>
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.EstimatesEndDate)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.EstimatesEndDate)
+        </dd>
+    </dl>
+
+
+
+    <form asp-action="DeleteConfirmed" method="post">
+
+
+
+        <input type="hidden" asp-for="Id" />
+
+        <button type="submit" class="btn btn-danger">🗑️ Підтвердити Видалення</button> |
+        <a asp-action="Index" class="btn btn-secondary">Скасувати та Повернутися</a>
+    </form>
+</div>

@@ -37,17 +37,25 @@ namespace AgroindustryManagementWeb.Controllers
             {
                 var field = _databaseService.GetFieldById(fieldId);
                 var resource = _databaseService.GetResourceByCultureType(field.Culture);
+                var workersCount= _aGCalculationService.CalculateRequiredWorkers(resource, field.Area);
                 ViewBag.RequiredWorkers = _aGCalculationService.CalculateRequiredWorkers(resource, field.Area);
                 ViewBag.RequiredMachinery = _aGCalculationService.CalculateRequiredMachineryCount(resource);
                 ViewBag.SeedAmount = _aGCalculationService.CalculateSeedAmount(resource, field.Area);
                 ViewBag.FertilizerAmount = _aGCalculationService.CalculateFertilizerAmount(resource, field.Area);
                 ViewBag.EstimatedYield = _aGCalculationService.EstimateYield(resource, field.Area);
+                
                 double fuelConsumption = 0;
                 foreach (var machine in field.Machines)
                 {
                     fuelConsumption += _aGCalculationService.EstimateFuelConsumption(machine, field.Area);
                 }
                 ViewBag.EstimatedFuelConsumption = fuelConsumption;
+                double duration = 0;
+                foreach (var machine in field.Machines)
+                {
+                    duration += _aGCalculationService.EstimateWorkDuration(field.Area, workersCount, machine, resource);
+                }
+                ViewBag.EstimateWorkDuration = Math.Ceiling(duration);
                 return View(field);
             }
             catch (KeyNotFoundException ex)
@@ -63,7 +71,7 @@ namespace AgroindustryManagementWeb.Controllers
         }
         public IActionResult Create()
         {
-            // Не забуваємо передати всі доступні об'єкти для вибору у View
+            
             ViewBag.AvailableWorkers = _databaseService.GetAllWorkers();
             ViewBag.AvailableMachines = _databaseService.GetAllMachines();
             ViewBag.AvailableTasks = _databaseService.GetAllWorkerTasks();

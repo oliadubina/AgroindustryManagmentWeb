@@ -1,0 +1,73 @@
+﻿@using AgroindustryManagementWeb.Models
+@model Machine
+
+@{
+    ViewData["Title"] = $"Деталі Машини ID: {Model.Id}";
+}
+
+<h1>🔍 Деталі Машини</h1>
+
+<hr />
+<div>
+
+    <h2>Основна Інформація</h2>
+    <dl class="row">
+       
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.FuelConsumption)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.FuelConsumption)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.IsAvailable)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.IsAvailable)
+        </dd>
+
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.WorkDuralityPerHectare)
+        </dt>
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.WorkDuralityPerHectare)
+        </dd>
+       
+    </dl>
+
+    <hr />
+
+    <dt class="col-sm-3">🧑‍🌾 Ресурс:</dt>
+    <dd class="col-sm-9">
+      
+        @(Model.Resource?.CultureType)  (ID: @Model.ResourceId)
+    </dd>
+
+    <dt class="col-sm-3">🗺️ Поле:</dt>
+    <dd class="col-sm-9">
+        @* Виводимо площу та ID поля *@
+        @(Model.Field?.Area) га (ID: @Model.FieldId)
+    </dd>
+
+</div>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">✏️ Редагувати</a>
+    <a asp-action="Index" class="btn btn-secondary">Повернутися до Списку</a>
+</div>

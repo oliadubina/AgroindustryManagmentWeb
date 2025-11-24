@@ -60,13 +60,13 @@ namespace IdentityServer
                     // 1. User clicks Login in MVC
                     // 2. IdentityServer logs them in
                     // 3. IdentityServer redirects back to THIS url:
-                    RedirectUris = { "https://localhost:5002/signin-oidc" },
+                    RedirectUris = { "https://localhost:7135/signin-oidc" },
 
                     // usage:
                     // 1. User clicks Logout in MVC
                     // 2. MVC clears cookies and redirects to IdentityServer
                     // 3. IdentityServer clears cookies and redirects back to THIS url:
-                    PostLogoutRedirectUris = { "https://localhost:5002/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:7135/signout-callback-oidc" },
 
                     AllowOfflineAccess = true,
                     AllowedScopes = 
